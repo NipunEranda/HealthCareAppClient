@@ -39,6 +39,14 @@
 			</div>
 
 		</div>
+		<%
+		if (request.getParameter("logout") != null) {
+			if (request.getParameter("logout").equalsIgnoreCase("true")) {
+				session.invalidate();
+				response.sendRedirect("login.jsp");
+			}
+		}
+	%>
 	</div>
 </body>
 </html>

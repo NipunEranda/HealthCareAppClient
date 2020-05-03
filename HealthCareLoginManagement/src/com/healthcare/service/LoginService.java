@@ -12,4 +12,5 @@ public interface LoginService {
 	public String resetPassword(String User_Id, String currentPassword, String newPassword);
 	public String verifyPassword(String User_Id, String currentPassword);
 	public JsonObject getAutization(String header);
+	public JsonObject getUserDetails(String userId);
 }

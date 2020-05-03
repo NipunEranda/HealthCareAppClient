@@ -42,4 +42,9 @@ public class LoginServiceImp implements LoginService {
 		return obj;
 	}
 
+	@Override
+	public JsonObject getUserDetails(String userId) {
+		return DBManager.getUserDetails(userId);
+	}
+
 }

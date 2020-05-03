@@ -195,5 +195,35 @@ public class DBManager {
 
 		return obj;
 	}
+	
+	public static JsonObject getUserDetails(String userId) {
+		JsonObject obj = new JsonObject();
+		Connection con;
+		try {
+			con = DBConnection.connect();
+			String query = "SELECT * FROM user WHERE userId=" + userId;
+			PreparedStatement ps_getDetails = con.prepareStatement(query);
+			
+			ResultSet rs_getDetails = ps_getDetails.executeQuery();
+			
+			while(rs_getDetails.next()) {
+				obj.addProperty("loginId", rs_getDetails.getInt(2));
+				obj.addProperty("firstName", rs_getDetails.getString(3));
+				obj.addProperty("lastName", rs_getDetails.getString(4));
+				obj.addProperty("age", rs_getDetails.getInt(5));
+				obj.addProperty("gender", rs_getDetails.getString(6));
+				obj.addProperty("address", rs_getDetails.getString(7));
+				obj.addProperty("mobileNumber", rs_getDetails.getString(8));
+			}
+			
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return obj;
+	}
 
 }

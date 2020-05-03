@@ -39,10 +39,21 @@ public class LoginController extends HttpServlet {
 			throws ServletException, IOException {
 
 		Login login = new Login();
-		HashMap<String, String> userDetails = login.login(request, response);
+		HashMap<String, String> userDetails = login.login(request.getParameter("email"), request.getParameter("password"));
 
 		if (userDetails.get("status").equalsIgnoreCase("success")) {
-			response.sendRedirect("homePage.jsp");
+
+			HttpSession session = request.getSession();
+			session.setAttribute("email", userDetails.get("email"));
+			session.setAttribute("userId", userDetails.get("userId"));
+			session.setAttribute("authString", userDetails.get("authString"));
+			session.setAttribute("role", userDetails.get("role"));
+			
+			if (userDetails.get("role").equalsIgnoreCase("admin")) {
+				response.sendRedirect("adminPanel.jsp");
+			}else {
+				response.sendRedirect("homePage.jsp");
+			}
 		} else {
 			response.sendRedirect("login.jsp");
 			response.sendError(999, "Login Credentials are not valid");

@@ -75,4 +75,10 @@ public class LoginServlet {
 		return Response.ok(obj.toString()).build();
 	}
 	
+	@GET
+	@Path("/getUserDetails/{userId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUserDetails(@PathParam("userId") String userId, @HeaderParam("authString") String authString) {
+		return Response.ok(loginServiceObj.getUserDetails(userId).toString()).build();
+	}
 }
