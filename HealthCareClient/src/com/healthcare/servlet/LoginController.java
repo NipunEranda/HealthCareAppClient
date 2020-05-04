@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.healthcare.model.Login;
-import com.healthcare.utils.StringSplitter;
 
 import jdk.nashorn.internal.parser.JSONParser;
 

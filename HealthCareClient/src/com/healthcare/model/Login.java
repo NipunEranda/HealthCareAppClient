@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.healthcare.utils.StringSplitter;
+import org.json.JSONObject;
 
 public class Login {
 
@@ -47,15 +47,15 @@ public class Login {
 				}
 				in1.close();
 
-				HashMap<String, String> h1 = StringSplitter.proceed(response1.toString());
+				JSONObject jsonObject1 = new JSONObject(response1.toString());
 
-				if (h1.get("status").equalsIgnoreCase("success")) {
-					HashMap<String, String> h2 = null;
+				if (jsonObject1.get("status").toString().equalsIgnoreCase("success")) {
+					JSONObject jsonObject2 = null;
 
 					URL get_obj = new URL(GET_URL);
 					HttpURLConnection con2 = (HttpURLConnection) get_obj.openConnection();
 					con2.setRequestMethod("GET");
-					con2.setRequestProperty("authString", h1.get("authString"));
+					con2.setRequestProperty("authString", jsonObject1.get("authString").toString());
 					int get_responseCode = con2.getResponseCode();
 					if (get_responseCode == HttpURLConnection.HTTP_OK) {
 						BufferedReader in2 = new BufferedReader(new InputStreamReader(con2.getInputStream()));
@@ -67,16 +67,17 @@ public class Login {
 						}
 						in2.close();
 
-						h2 = StringSplitter.proceed(response2.toString());
+						
+						jsonObject2 = new JSONObject(response2.toString());
 					} else {
 						System.out.println("GET request not worked");
 					}
 
 					userDetails.put("status", "success");
 					userDetails.put("email", email);
-					userDetails.put("userId", h1.get("userId"));
-					userDetails.put("authString", h1.get("authString"));
-					userDetails.put("role", h2.get("role"));
+					userDetails.put("userId", jsonObject1.get("userId").toString());
+					userDetails.put("authString", jsonObject1.get("authString").toString());
+					userDetails.put("role", jsonObject2.get("role").toString());
 
 				} else {
 					userDetails.put("status", "fail");
@@ -92,8 +93,8 @@ public class Login {
 		return userDetails;
 	}
 
-	public HashMap<String, String> getUserDetails(String authString, String userId) {
-		HashMap<String, String> userDetails = new HashMap<>();
+	public JSONObject getUserDetails(String authString, String userId) {
+		JSONObject jsonObject = null;
 		try {
 			String GET_URL = "http://localhost:8080/HealthCareLoginManagement/webapi/login/getUserDetails/"+ userId;
 			URL get_obj = new URL(GET_URL);
@@ -113,7 +114,7 @@ public class Login {
 				}
 				in.close();
 
-				userDetails = StringSplitter.proceed(response2.toString());
+				jsonObject = new JSONObject(response2.toString());
 			} else {
 				System.out.println("GET request not worked");
 			}
@@ -121,7 +122,7 @@ public class Login {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return userDetails;
+		return jsonObject;
 	}
 
 }

@@ -56,10 +56,10 @@
 				<h1 style="text-align: center;">
 					Welcome
 					<%
-					Login login = new Login();
-					HashMap<String, String> userDetails = login.getUserDetails((String) session.getAttribute("authString"),
+					/*Login login = new Login();*/
+					/*HashMap<String, String> userDetails = login.getUserDetails((String) session.getAttribute("authString"),
 							(String) session.getAttribute("userId"));
-					out.print(userDetails.get("firstName"));
+					out.print(userDetails.get("firstName"));*/
 				%>
 				</h1>
 				<br />

@@ -38,9 +38,9 @@ public class PatientManagementServlet {
 			@FormParam("mobileNumber") String mobileNumber, @FormParam("email") String email,
 			@FormParam("password") String password) {
 
-		HashMap<String, String> h = patientManagementServiceObj.RegisterUser(firstName, lastName, age, gender, address,
+		JsonObject j = patientManagementServiceObj.RegisterUser(firstName, lastName, age, gender, address,
 				mobileNumber, email, password);
-		return Response.ok(h.get("status").toString()).build();
+		return Response.ok(j.toString()).build();
 	}
 
 	@GET
@@ -139,8 +139,8 @@ public class PatientManagementServlet {
 			@FormParam("patientCondition") String patientCondition, @HeaderParam("authString") String authString) {
 
 		if (AccessFilter.checkAccess(new String[] { "admin", "doctor" }, authString)) {
-			HashMap<String, String> h = patientManagementServiceObj.recordPatientCondition(userId, patientCondition);
-			return Response.ok(h.get("status").toString()).build();
+			JsonObject j = patientManagementServiceObj.recordPatientCondition(userId, patientCondition);
+			return Response.ok(j.toString()).build();
 		} else {
 			return com.healthcare.model.Response.sendErrorResponse();
 		}
@@ -155,8 +155,8 @@ public class PatientManagementServlet {
 			@HeaderParam("authString") String authString) {
 
 		if (AccessFilter.checkAccess(new String[] { "admin", "doctor" }, authString)) {
-			HashMap<String, String> h = patientManagementServiceObj.assignToHospital(userId, hospitalId);
-			return Response.ok(h.get("status").toString()).build();
+			JsonObject j = patientManagementServiceObj.assignToHospital(userId, hospitalId);
+			return Response.ok(j.toString()).build();
 		} else {
 			return com.healthcare.model.Response.sendErrorResponse();
 		}

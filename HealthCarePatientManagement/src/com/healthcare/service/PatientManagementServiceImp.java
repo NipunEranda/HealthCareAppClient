@@ -11,10 +11,10 @@ import com.healthcare.model.User;
 public class PatientManagementServiceImp implements PatientManagementService {
 
 	@Override
-	public HashMap<String, String> RegisterUser(String firstName, String lastName, String age, String gender,
+	public JsonObject RegisterUser(String firstName, String lastName, String age, String gender,
 			String address, String mobileNumber, String email, String password) {
-		HashMap<String, String> h = DBManager.registerUser(firstName, lastName, age, gender, address, mobileNumber,email, password);
-		return h;
+		JsonObject j = DBManager.registerUser(firstName, lastName, age, gender, address, mobileNumber,email, password);
+		return j;
 	}
 
 	@Override
@@ -50,15 +50,15 @@ public class PatientManagementServiceImp implements PatientManagementService {
 	}
 
 	@Override
-	public HashMap<String, String> recordPatientCondition(String userId, String patientCondition) {
-		HashMap<String, String> h = DBManager.recordPatientCondition(userId, patientCondition);
-		return h;
+	public JsonObject recordPatientCondition(String userId, String patientCondition) {
+		JsonObject j = DBManager.recordPatientCondition(userId, patientCondition);
+		return j;
 	}
 
 	@Override
-	public HashMap<String, String> assignToHospital(String userId, String hospitalId) {
-		HashMap<String, String> h = DBManager.assignToHospital(userId, hospitalId);
-		return h;
+	public JsonObject assignToHospital(String userId, String hospitalId) {
+		JsonObject j = DBManager.assignToHospital(userId, hospitalId);
+		return j;
 	}
 
 	@Override

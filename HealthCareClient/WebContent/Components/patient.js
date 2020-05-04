@@ -19,6 +19,8 @@ $(document).on("click", "#saveBtn", function(event) {
 		$("#alertError").show();
 		return;
 	}
+	
+	$("#alertSuccess").show();
 	$("#formPatient").submit();
 });
 

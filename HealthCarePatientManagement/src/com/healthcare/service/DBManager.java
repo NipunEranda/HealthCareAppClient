@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -17,13 +16,13 @@ import com.healthcare.util.DBConnection;
 
 public class DBManager {
 
-	public static HashMap<String, String> registerUser(String firstName, String lastName, String age, String gender,
+	public static JsonObject registerUser(String firstName, String lastName, String age, String gender,
 			String address, String mobileNumber, String email, String password) {
 
 		int i = 0;
 		int j = 0;
 		int z = 0;
-		HashMap<String, String> h = new HashMap<String, String>();
+		JsonObject jsonResult = new JsonObject();
 
 		try {
 
@@ -31,7 +30,7 @@ public class DBManager {
 
 			String insertSQL1 = "INSERT INTO login VALUES(?, ?, ?, ?)";
 			String insertSQL2 = "INSERT INTO user VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-			String insertSQL3 = "INSERT INTO patient VALUES(?, NULL, NULL)";
+			String insertSQL3 = "INSERT INTO patient VALUES(?, 0, NULL)";
 			String emailVarification = "SELECT * FROM login WHERE Login_Email = ?";
 			String getLoginId = "SELECT Login_Id FROM login WHERE Login_Email = ?";
 			int loginId;
@@ -97,12 +96,12 @@ public class DBManager {
 		}
 
 		if (i > 0 && j > 0 && z > 0) {
-			h.put("status", "success");
+			jsonResult.addProperty("status", "success");
 		} else {
-			h.put("status", "fail");
+			jsonResult.addProperty("status", "fail");
 		}
 
-		return h;
+		return jsonResult;
 	}
 
 	public static int getLoginId(String userId) {
@@ -283,9 +282,9 @@ public class DBManager {
 		return user;
 	}
 
-	public static HashMap<String, String> recordPatientCondition(String userId, String patientCondition) {
+	public static JsonObject recordPatientCondition(String userId, String patientCondition) {
 
-		HashMap<String, String> h = new HashMap<>();
+		JsonObject jsonResult = new JsonObject();
 
 		try {
 
@@ -298,16 +297,16 @@ public class DBManager {
 				ps_insertPatientCondition.setInt(2, Integer.parseInt(userId));
 
 				if (ps_insertPatientCondition.executeUpdate() > 0) {
-					h.put("status", "success");
+					jsonResult.addProperty("status", "success");
 				} else {
-					h.put("status", "fail");
+					jsonResult.addProperty("status", "fail");
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return h;
+		return jsonResult;
 	}
 
 	public static JsonObject getPatientCondition(String userId) {
@@ -333,8 +332,8 @@ public class DBManager {
 		return patientObj;
 	}
 
-	public static HashMap<String, String> assignToHospital(String userId, String hospitalId) {
-		HashMap<String, String> h = new HashMap<>();
+	public static JsonObject assignToHospital(String userId, String hospitalId) {
+		JsonObject jsonResult = new JsonObject();
 
 		try {
 			Connection con = DBConnection.connect();
@@ -346,15 +345,15 @@ public class DBManager {
 				ps_updatehospitalId.setInt(2, Integer.parseInt(userId));
 
 				if (ps_updatehospitalId.executeUpdate() > 0) {
-					h.put("status", "success");
+					jsonResult.addProperty("status", "success");
 				} else {
-					h.put("status", "fail");
+					jsonResult.addProperty("status", "fail");
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return h;
+		return jsonResult;
 	}
 
 	public static boolean checkIfUserIsAPatient(String userId) {
