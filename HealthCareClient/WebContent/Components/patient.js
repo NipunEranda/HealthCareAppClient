@@ -13,16 +13,30 @@ $(document).on("click", "#saveBtn", function(event) {
 	$("#alertSuccess").hide();
 	$("#alertError").text("");	
 	$("#alertError").hide();
+	
+	if($("#hiddenPatientIdSave").val == ""){
 
-	var status = validateItemForm();
-	if (status != true) {
-		$("#alertError").text(status);
-		$("#alertError").show();
-		return;
+		var status = validateItemForm();
+		if (status != true) {
+			$("#alertError").text(status);
+			$("#alertError").show();
+			return;
+		}
+	}else{
+		var status = validateItemFormUpdate();
+		if (status != true) {
+			$("#alertError").text(status);
+			$("#alertError").show();
+			return;
+		}
 	}
-
 	$("#alertSuccess").show();
 	$("#formPatient").submit();
+});
+
+$(document).on("click", ".btnRemove", function(event) {
+	$("#hiddenPatientIdDelete").val($(this).closest("tr").find('#hiddenPatientIdDelete').val());
+	$("#patientDeleteForm").submit();
 });
 
 $(document).on("click", ".btnUpdate", function(event)
@@ -118,5 +132,51 @@ function validateItemForm() {
 		}
 	}
 
+	return true;
+}
+
+function validateItemFormUpdate() {
+
+	if ($("#firstName").val().trim() == "") {
+		return "Insert your First Name.";
+	}
+
+	if ($("#lastName").val().trim() == "") {
+		return "Insert your Last Name.";
+	}
+
+	if ($("#age").val().trim() == "") {
+		return "Insert your age";
+	}
+
+	if (age < 1) {
+		return "Insert a valid age.";
+	}
+
+	if ($("#gender").val().trim() == "Choose...") {
+		return "Select your gender";
+	}
+
+	if ($("#address").val().trim() == "") {
+		return "Insert your address";
+	}
+
+	if ($("#mobileNumber").val().trim() == "") {
+		return "Insert your mobile Number";
+	}
+
+	if ($("#mobileNumber").val().trim().split("").length < 10) {
+		return "Mobile number is not valid";
+	}
+
+	if ($("#email").val().trim() == "") {
+		return "Insert your email address";
+	} else {
+		var regExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if (!regExpression.test($("#email").val().trim())) {
+			return "Email is not valid";
+		}
+	}
+	
 	return true;
 }

@@ -209,10 +209,9 @@ public class DBManager {
 	}
 
 	public static JsonObject deleteUser(String userId) {
-		JsonObject user = new JsonObject();
+		JsonObject jsonResult = new JsonObject();
 		try {
 			if (checkIfUserIsAPatient(userId)) {
-				user = getUserDetails(userId);
 				int loginId = getLoginId(userId);
 				Connection con = DBConnection.connect();
 
@@ -225,12 +224,14 @@ public class DBManager {
 
 						PreparedStatement ps_deleteFromLogin = con.prepareStatement(deleteFromLogin);
 						if (ps_deleteFromLogin.executeUpdate() < 0) {
-							user = new JsonObject();
+							jsonResult.addProperty("status", "fail");
 						} else {
 							String deleteFromPatient = "DELETE FROM patient WHERE userId = " + userId;
 							PreparedStatement ps_deleteFromPatient = con.prepareStatement(deleteFromPatient);
 							if (ps_deleteFromPatient.executeUpdate() < 0) {
-								user = new JsonObject();
+								jsonResult.addProperty("status", "fail");
+							}else {
+								jsonResult.addProperty("status", "success");
 							}
 						}
 
@@ -240,12 +241,12 @@ public class DBManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return user;
+		return jsonResult;
 	}
 
 	public static JsonObject updateUser(String userId, String firstName, String lastName, String age, String gender,
 			String address, String mobileNumber, String email) {
-		JsonObject user = new JsonObject();
+		JsonObject jsonResult = new JsonObject();
 		try {
 			if (checkIfUserIsAPatient(userId)) {
 				int loginId = getLoginId(userId);
@@ -270,7 +271,9 @@ public class DBManager {
 				if (ps_updateUserTable.executeUpdate() > 0) {
 
 					if (ps_updateLoginTable.executeUpdate() > 0) {
-						user = getUserDetails(userId);
+						jsonResult.addProperty("status", "success");
+					}else {
+						jsonResult.addProperty("status", "fail");
 					}
 
 				}
@@ -279,7 +282,7 @@ public class DBManager {
 			e.printStackTrace();
 		}
 
-		return user;
+		return jsonResult;
 	}
 
 	public static JsonObject recordPatientCondition(String userId, String patientCondition) {

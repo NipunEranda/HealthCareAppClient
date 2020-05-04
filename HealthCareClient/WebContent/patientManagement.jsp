@@ -23,6 +23,32 @@
 	margin: 20px;
 }
 </style>
+
+<%
+	if (session.getAttribute("statusMsg") != null) {
+%>
+<style>
+.alert .alert-success {
+	display: block;
+}
+</style>
+<%
+	} else {
+%>
+<style>
+.alert .alert-success {
+	display: none;
+}
+
+.alert .alert-danger {
+	display: none;
+}
+</style>
+
+<%
+	}
+%>
+
 </head>
 <body>
 
@@ -30,21 +56,26 @@
 		Patient patient = new Patient();
 		String stsMsg = "";
 
-		if (request.getParameter("hiddenPatientIdSave") == "") {
-			stsMsg = patient.insertPatient(request.getParameter("firstName"), request.getParameter("lastName"),
-					request.getParameter("age"), request.getParameter("gender"), request.getParameter("address"),
-					request.getParameter("mobileNumber"), request.getParameter("email"),
-					request.getParameter("password"));
-		} else {
-
-			stsMsg = patient.updatePatient(request.getParameter("hiddenPatientIdSave"),
-					request.getParameter("firstName"), request.getParameter("lastName"),
-					request.getParameter("age"), request.getParameter("gender"), request.getParameter("address"),
-					request.getParameter("mobileNumber"), request.getParameter("email"));
+		if (request.getParameter("firstName") != null) {
+			stsMsg = "Insert ";
+			if (request.getParameter("hiddenPatientIdSave") == "") {
+				stsMsg += patient.insertPatient(request.getParameter("firstName"), request.getParameter("lastName"),
+						request.getParameter("age"), request.getParameter("gender"),
+						request.getParameter("address"), request.getParameter("mobileNumber"),
+						request.getParameter("email"), request.getParameter("password"));
+			} else {
+				stsMsg = "Update ";
+				stsMsg += patient.updatePatient(request.getParameter("hiddenPatientIdSave"),
+						request.getParameter("firstName"), request.getParameter("lastName"),
+						request.getParameter("age"), request.getParameter("gender"),
+						request.getParameter("address"), request.getParameter("mobileNumber"),
+						request.getParameter("email"), session.getAttribute("authString").toString());
+			}
 		}
-
-		if (request.getParameter("hiddenPatientIDDelete") != null) {
-			stsMsg = patient.deletePatient(request.getParameter("hiddenPatientIDDelete"));
+		if (request.getParameter("hiddenPatientIdDelete") != null) {
+			stsMsg = "Delete ";
+			stsMsg += patient.deletePatient(request.getParameter("hiddenPatientIdDelete"),
+					session.getAttribute("authString").toString());
 		}
 		session.setAttribute("statusMsg", stsMsg);
 	%>
@@ -128,45 +159,26 @@
 						</div>
 
 						<div class="form-group">
-							<label for="email">Email address</label> <input type="email"
-								class="form-control" id="email" name="email" placeholder="Email">
-							<small id="emailSmallText" class="form-text text-muted">We'll
-								never share your email with anyone else.</small>
+							<div class="row">
+								<div class="col">
+									<label for="email">Email address</label> <input type="email"
+										class="form-control" id="email" name="email"
+										placeholder="Email"> <small id="emailSmallText"
+										class="form-text text-muted">We'll never share your
+										email with anyone else.</small>
+								</div>
+								<div class="col">
+									<label for="password">Password</label> <input type="password"
+										class="form-control" id="password" name="password"
+										placeholder="Password"
+										title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.">
+									<small id="passwordSmallText" class="form-text text-muted">Must
+										contain numbers,uppercase,lowercase letters, and at least 8 or
+										more characters.</small>
+								</div>
+							</div>
 						</div>
 
-						<div class="form-group">
-							<label for="password">Password</label> <input type="password"
-								class="form-control" id="password" name="password"
-								placeholder="Password"
-								title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.">
-							<small id="passwordSmallText" class="form-text text-muted">Must
-								contain at least one number and one uppercase and lowercase
-								letter, and at least 8 or more characters.</small>
-						</div>
-						<%
-							if (session.getAttribute("statusMsg") != null) {
-						%>
-						<style>
-.alert .alert-success {
-	display: block;
-}
-</style>
-						<%
-							} else {
-						%>
-						<style>
-.alert .alert-success {
-	display: none;
-}
-
-.alert .alert-danger {
-	display: none;
-}
-</style>
-
-						<%
-							}
-						%>
 						<div id="alertSuccess" class="alert alert-success">
 							<%
 								if (session.getAttribute("statusMsg") != null) {
@@ -178,15 +190,16 @@
 						<div id="alertError" class="alert alert-danger"></div>
 						<input type="button" class="btn btn-primary" id="saveBtn"
 							name="saveBtn" value="Save">&nbsp;<input type="button"
-							class="btn btn-danger" id="cancelBtn" name="cancelBtn" value="Cancel">
-						<input type="hidden" id="hiddenPatientIdSave"
-							name="hiddenPatientIdSave" value="" />
+							class="btn btn-danger" id="cancelBtn" name="cancelBtn"
+							value="Cancel"> <input type="hidden"
+							id="hiddenPatientIdSave" name="hiddenPatientIdSave" value="" />
 
 					</form>
 				</div>
 				<br />
 				<div>
 					<h1>Patients List</h1>
+					<br />
 					<%
 						out.print(patient.readPatients(session.getAttribute("authString").toString()));
 					%>

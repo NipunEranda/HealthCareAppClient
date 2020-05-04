@@ -5,13 +5,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
-import org.apache.jasper.compiler.AntCompiler.JasperAntLogger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -83,12 +77,14 @@ public class Patient {
 				for (Object x : jsonArray) {
 					JSONObject jsonObject = new JSONObject(x.toString());
 					JSONObject login = jsonObject.getJSONObject("login");
-					output += "<tr><td><input type=\"hidden\" id=\"hiddenPatientIdUpdate\" name=\"hiddenPatientIdUpdate\" value=\"" + jsonObject.getInt("userId") + "\">" + jsonObject.getString("firstName") + "</td><td>"
+					output += "<tr><td><input type=\"hidden\" id=\"hiddenPatientIdUpdate\" name=\"hiddenPatientIdUpdate\" value=\""
+							+ jsonObject.getInt("userId") + "\">" + jsonObject.getString("firstName") + "</td><td>"
 							+ jsonObject.getString("lastName") + "</td><td>" + jsonObject.getInt("age") + "</td><td>"
 							+ jsonObject.getString("gender") + "</td><td>" + jsonObject.getString("address")
 							+ "</td><td>" + jsonObject.getString("mobileNumber") + "</td><td>"
 							+ login.getString("email")
-							+ "</td><td><input type=\"button\" name=\"btnUpdate\" value=\"Update\" class=\"btnUpdate btn btn-secondary\"></Button</td><td><form method=\"post\" action=\"patientManagement.jsp\"><input type=\"button\" name=\"btnRemove\" value=\"Remove\" class=\"btn btn-danger\"></Button><input type=\"hidden\" name=\"hiddenPatientIDDelete\" value=\"" + jsonObject.getInt("userId") + "\"></form></td></tr>";
+							+ "</td><td><input type=\"button\" name=\"btnUpdate\" value=\"Update\" class=\"btnUpdate btn btn-secondary\"></td><td><form id=\"patientDeleteForm\" method=\"post\" action=\"patientManagement.jsp\"><input type=\"button\" name=\"btnRemove\" value=\"Remove\" class=\"btn btnRemove btn-danger\"><input type=\"hidden\" id=\"hiddenPatientIdDelete\" name=\"hiddenPatientIdDelete\" value=\""
+							+ jsonObject.getInt("userId") + "\"></form></td></tr>";
 				}
 				output += "</table>";
 			} else {
@@ -101,12 +97,79 @@ public class Patient {
 	}
 
 	public String updatePatient(String userId, String firstName, String lastName, String age, String gender,
-			String address, String mobileNumber, String email) {
-		return null;
+			String address, String mobileNumber, String email, String authString) {
+		String output = null;
+		try {
+			String POST_URL = "http://localhost:8080/HealthCarePatientManagement/webapi/patient/updateUser?";
+			String POST_PARAMS = "userId=" + userId + "&firstName=" + firstName + "&lastName=" + lastName + "&age="
+					+ age + "&gender=" + gender + "&address=" + address + "&mobileNumber=" + mobileNumber + "&email="
+					+ email;
+			URL obj = new URL(POST_URL);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			con.setRequestMethod("PUT");
+			con.setRequestProperty("authString", authString);
+			con.setDoOutput(true);
+			OutputStream os = con.getOutputStream();
+			os.write(POST_PARAMS.getBytes());
+			os.flush();
+			os.close();
+
+			int responseCode = con.getResponseCode();
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+				BufferedReader in1 = new BufferedReader(new InputStreamReader(con.getInputStream()));
+				String inputLine1;
+				StringBuffer response1 = new StringBuffer();
+
+				while ((inputLine1 = in1.readLine()) != null) {
+					response1.append(inputLine1);
+				}
+				in1.close();
+
+				/* HashMap<String, String> h1 = StringSplitter.proceed(response1.toString()); */
+				JSONObject jsonObject = new JSONObject(response1.toString());
+				output = jsonObject.getString("status").toString();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return output;
 	}
 
-	public String deletePatient(String userId) {
-		return null;
+	public String deletePatient(String userId, String authString) {
+		String output = null;
+		try {
+			String POST_URL = "http://localhost:8080/HealthCarePatientManagement/webapi/patient/" + userId;
+			URL obj = new URL(POST_URL);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			con.setRequestMethod("DELETE");
+			con.setRequestProperty("authString", authString);
+			con.setDoOutput(true);
+			OutputStream os = con.getOutputStream();
+			os.flush();
+			os.close();
+
+			int responseCode = con.getResponseCode();
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+				BufferedReader in1 = new BufferedReader(new InputStreamReader(con.getInputStream()));
+				String inputLine1;
+				StringBuffer response1 = new StringBuffer();
+
+				while ((inputLine1 = in1.readLine()) != null) {
+					response1.append(inputLine1);
+				}
+				in1.close();
+
+				JSONObject jsonObject = new JSONObject(response1.toString());
+				output = jsonObject.getString("status").toString();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return output;
 	}
 
 }
