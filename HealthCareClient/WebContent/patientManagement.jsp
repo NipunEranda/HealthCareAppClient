@@ -30,15 +30,23 @@
 		Patient patient = new Patient();
 		String stsMsg = "";
 
-		if (request.getParameter("input") != null) {
-			if (request.getParameter("input").equalsIgnoreCase("true")) {
-				/*stsMsg = patient.insertPatient(request.getParameter("firstName"), request.getParameter("lastName"),
-						request.getParameter("age"), request.getParameter("gender"),
-						request.getParameter("address"), request.getParameter("mobileNumber"),
-						request.getParameter("email"), request.getParameter("password"));*/
-				session.setAttribute("statusMsg", "success");
-			}
+		if (request.getParameter("hiddenPatientIdSave") == "") {
+			stsMsg = patient.insertPatient(request.getParameter("firstName"), request.getParameter("lastName"),
+					request.getParameter("age"), request.getParameter("gender"), request.getParameter("address"),
+					request.getParameter("mobileNumber"), request.getParameter("email"),
+					request.getParameter("password"));
+		} else {
+
+			stsMsg = patient.updatePatient(request.getParameter("hiddenPatientIdSave"),
+					request.getParameter("firstName"), request.getParameter("lastName"),
+					request.getParameter("age"), request.getParameter("gender"), request.getParameter("address"),
+					request.getParameter("mobileNumber"), request.getParameter("email"));
 		}
+
+		if (request.getParameter("hiddenPatientIDDelete") != null) {
+			stsMsg = patient.deletePatient(request.getParameter("hiddenPatientIDDelete"));
+		}
+		session.setAttribute("statusMsg", stsMsg);
 	%>
 
 	<div class="baseContainer">
@@ -66,14 +74,12 @@
 					</div>
 				</nav>
 			</div>
-
+			<br />
 			<div class="container">
-
 				<div>
-					<h1>Patient Details</h1>
+					<h1>Manage Patient Details</h1>
 					<br />
-					<form id="formPatient" action="patientManagement.jsp?input=true"
-						method="post">
+					<form id="formPatient" action="patientManagement.jsp" method="post">
 						<div class="form-group">
 							<div class="row">
 								<div class="col">
@@ -171,10 +177,19 @@
 						</div>
 						<div id="alertError" class="alert alert-danger"></div>
 						<input type="button" class="btn btn-primary" id="saveBtn"
-							name="saveBtn" value="Save"> <input type="hidden"
-							id="hiddenPatientIdSave" name="hiddenPatientId" value="" />
+							name="saveBtn" value="Save">&nbsp;<input type="button"
+							class="btn btn-danger" id="cancelBtn" name="cancelBtn" value="Cancel">
+						<input type="hidden" id="hiddenPatientIdSave"
+							name="hiddenPatientIdSave" value="" />
 
 					</form>
+				</div>
+				<br />
+				<div>
+					<h1>Patients List</h1>
+					<%
+						out.print(patient.readPatients(session.getAttribute("authString").toString()));
+					%>
 				</div>
 			</div>
 		</div>

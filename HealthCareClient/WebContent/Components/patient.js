@@ -3,6 +3,7 @@ $(document).ready(function() {
 		$("#alertSuccess").hide();
 	}
 	$("#alertError").hide();
+	$("#cancelBtn").hide();
 });
 
 $(document).on("click", "#saveBtn", function(event) {
@@ -10,7 +11,7 @@ $(document).on("click", "#saveBtn", function(event) {
 	// Clear alerts---------------------
 	$("#alertSuccess").text("");
 	$("#alertSuccess").hide();
-	$("#alertError").text("");
+	$("#alertError").text("");	
 	$("#alertError").hide();
 
 	var status = validateItemForm();
@@ -19,9 +20,38 @@ $(document).on("click", "#saveBtn", function(event) {
 		$("#alertError").show();
 		return;
 	}
-	
+
 	$("#alertSuccess").show();
 	$("#formPatient").submit();
+});
+
+$(document).on("click", ".btnUpdate", function(event)
+{
+	$("#cancelBtn").show();
+	$("#hiddenPatientIdSave").val($(this).closest("tr").find('#hiddenPatientIdUpdate').val());
+	$("#firstName").val($(this).closest("tr").find('td:eq(0)').text());
+	 $("#lastName").val($(this).closest("tr").find('td:eq(1)').text());
+	 $("#age").val($(this).closest("tr").find('td:eq(2)').text());
+	 $("#gender").val($(this).closest("tr").find('td:eq(3)').text()); 
+	 $("#address").val($(this).closest("tr").find('td:eq(4)').text()); 
+	 $("#mobileNumber").val($(this).closest("tr").find('td:eq(5)').text()); 
+	 $("#email").val($(this).closest("tr").find('td:eq(6)').text());
+	 $("#saveBtn").val("Update");
+	 $("#password").prop("disabled", true);
+});
+
+$(document).on("click", "#cancelBtn", function(event){
+	$("#cancelBtn").hide();
+	$("#saveBtn").val("Save");
+	$("#password").prop("disabled", false);
+	$("#hiddenPatientIdSave").value="";
+	$("#firstName").val("");
+	 $("#lastName").val("");
+	 $("#age").val("");
+	 $("#gender").val("Choose..."); 
+	 $("#address").val(""); 
+	 $("#mobileNumber").val(""); 
+	 $("#email").val("");
 });
 
 function validateItemForm() {
