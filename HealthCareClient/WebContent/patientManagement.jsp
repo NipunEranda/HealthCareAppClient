@@ -54,30 +54,7 @@
 
 	<%
 		Patient patient = new Patient();
-		String stsMsg = "";
 
-		if (request.getParameter("firstName") != null) {
-			stsMsg = "Insert ";
-			if (request.getParameter("hiddenPatientIdSave") == "") {
-				stsMsg += patient.insertPatient(request.getParameter("firstName"), request.getParameter("lastName"),
-						request.getParameter("age"), request.getParameter("gender"),
-						request.getParameter("address"), request.getParameter("mobileNumber"),
-						request.getParameter("email"), request.getParameter("password"));
-			} else {
-				stsMsg = "Update ";
-				stsMsg += patient.updatePatient(request.getParameter("hiddenPatientIdSave"),
-						request.getParameter("firstName"), request.getParameter("lastName"),
-						request.getParameter("age"), request.getParameter("gender"),
-						request.getParameter("address"), request.getParameter("mobileNumber"),
-						request.getParameter("email"), session.getAttribute("authString").toString());
-			}
-		}
-		if (request.getParameter("hiddenPatientIdDelete") != null) {
-			stsMsg = "Delete ";
-			stsMsg += patient.deletePatient(request.getParameter("hiddenPatientIdDelete"),
-					session.getAttribute("authString").toString());
-		}
-		session.setAttribute("statusMsg", stsMsg);
 	%>
 
 	<div class="baseContainer">
@@ -192,16 +169,18 @@
 							name="saveBtn" value="Save">&nbsp;<input type="button"
 							class="btn btn-danger" id="cancelBtn" name="cancelBtn"
 							value="Cancel"> <input type="hidden"
-							id="hiddenPatientIdSave" name="hiddenPatientIdSave" value="" />
+							id="hiddenPatientIdSave" name="hiddenPatientIdSave" value="" /><input type="hidden"
+							id="authString" name="authString" value="<% out.print(session.getAttribute("authString")); %>"/>
 
 					</form>
 				</div>
 				<br />
-				<div>
+				<div id="divItemsGrid">
 					<h1>Patients List</h1>
 					<br />
 					<%
-						out.print(patient.readPatients(session.getAttribute("authString").toString()));
+						patient.authString = session.getAttribute("authString").toString();
+						out.print(patient.readPatients());
 					%>
 				</div>
 			</div>

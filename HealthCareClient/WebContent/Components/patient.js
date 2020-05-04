@@ -6,23 +6,44 @@ $(document).ready(function() {
 	$("#cancelBtn").hide();
 });
 
-$(document).on("click", "#saveBtn", function(event) {
-	// Your code
-	// Clear alerts---------------------
-	$("#alertSuccess").text("");
-	$("#alertSuccess").hide();
-	$("#alertError").text("");	
-	$("#alertError").hide();
-	
-	if($("#hiddenPatientIdSave").val == ""){
+$(document)
+		.on(
+				"click",
+				".btnUpdate",
+				function(event) {
+					$("#cancelBtn").show();
+					$("#hiddenPatientIdSave").val(
+							$(this).closest("tr")
+									.find('#hiddenPatientIdUpdate').val());
+					$("#firstName").val(
+							$(this).closest("tr").find('td:eq(0)').text());
+					$("#lastName").val(
+							$(this).closest("tr").find('td:eq(1)').text());
+					$("#age")
+							.val($(this).closest("tr").find('td:eq(2)').text());
+					$("#gender").val(
+							$(this).closest("tr").find('td:eq(3)').text());
+					$("#address").val(
+							$(this).closest("tr").find('td:eq(4)').text());
+					$("#mobileNumber").val(
+							$(this).closest("tr").find('td:eq(5)').text());
+					$("#email").val(
+							$(this).closest("tr").find('td:eq(6)').text());
+					$("#saveBtn").val("Update");
+					$("#password").prop("disabled", true);
+				});
 
+$(document).on("click", "#saveBtn", function(event) {
+
+	var type = ($("#hiddenPatientIdSave").val() == "") ? "POST" : "PUT";
+	if (type == "POST") {
 		var status = validateItemForm();
 		if (status != true) {
 			$("#alertError").text(status);
 			$("#alertError").show();
 			return;
 		}
-	}else{
+	} else {
 		var status = validateItemFormUpdate();
 		if (status != true) {
 			$("#alertError").text(status);
@@ -30,42 +51,89 @@ $(document).on("click", "#saveBtn", function(event) {
 			return;
 		}
 	}
-	$("#alertSuccess").show();
-	$("#formPatient").submit();
+	$.ajax({
+		url : "PatientAPI",
+		type : type,
+		data : $("#formPatient").serialize(),
+		dataType : "text",
+		complete : function(response, status) {
+			onItemSaveComplete(response.responseText, status);
+		}
+	});
 });
 
 $(document).on("click", ".btnRemove", function(event) {
-	$("#hiddenPatientIdDelete").val($(this).closest("tr").find('#hiddenPatientIdDelete').val());
-	$("#patientDeleteForm").submit();
+	var userId = $(this).attr('data-userId');
+	$.ajax({
+		url : "PatientAPI",
+		type : "DELETE",
+		data : "userId=" + userId,
+		dataType : "text",
+		complete : function(response, status) {
+			onItemDeleteComplete(response.responseText, status);
+		}
+	});
 });
 
-$(document).on("click", ".btnUpdate", function(event)
-{
-	$("#cancelBtn").show();
-	$("#hiddenPatientIdSave").val($(this).closest("tr").find('#hiddenPatientIdUpdate').val());
-	$("#firstName").val($(this).closest("tr").find('td:eq(0)').text());
-	 $("#lastName").val($(this).closest("tr").find('td:eq(1)').text());
-	 $("#age").val($(this).closest("tr").find('td:eq(2)').text());
-	 $("#gender").val($(this).closest("tr").find('td:eq(3)').text()); 
-	 $("#address").val($(this).closest("tr").find('td:eq(4)').text()); 
-	 $("#mobileNumber").val($(this).closest("tr").find('td:eq(5)').text()); 
-	 $("#email").val($(this).closest("tr").find('td:eq(6)').text());
-	 $("#saveBtn").val("Update");
-	 $("#password").prop("disabled", true);
-});
+function onItemSaveComplete(response, status) {
+	if (status == "success") {
+		var resultSet = JSON.parse(response);
+		if (resultSet.status.trim() == "success") {
+			$("#alertSuccess").text("Successfully saved.");
+			$("#alertSuccess").show();
+			$("#cancelBtn").hide();
+			$("#divItemsGrid").html(resultSet.data);
+		} else if (resultSet.status.trim() == "error") {
+			$("#alertError").text(resultSet.data);
+			$("#alertError").show();
+		}
+	} else if (status == "error") {
+		$("#alertError").text("Error while saving.");
+		$("#alertError").show();
+	} else {
+		$("#alertError").text("Unknown error while saving..");
+		$("#alertError").show();
+	}
+	$("#hidItemIDSave").val("");
+	$("#formPatient")[0].reset();
+	$('#alertSuccess').fadeOut(3000);
+	$('#alertError').fadeOut(3000);
+}
 
-$(document).on("click", "#cancelBtn", function(event){
+function onItemDeleteComplete(response, status) {
+	if (status == "success") {
+		var resultSet = JSON.parse(response);
+		if (resultSet.status.trim() == "success") {
+			$("#alertSuccess").text("Successfully deleted.");
+			$("#alertSuccess").show();
+			$("#divItemsGrid").html(resultSet.data);
+		} else if (resultSet.status.trim() == "error") {
+			$("#alertError").text(resultSet.data);
+			$("#alertError").show();
+		}
+	} else if (status == "error") {
+		$("#alertError").text("Error while deleting.");
+		$("#alertError").show();
+	} else {
+		$("#alertError").text("Unknown error while deleting..");
+		$("#alertError").show();
+	}
+	$('#alertSuccess').fadeOut(3000);
+	$('#alertError').fadeOut(3000);
+}
+
+$(document).on("click", "#cancelBtn", function(event) {
 	$("#cancelBtn").hide();
 	$("#saveBtn").val("Save");
 	$("#password").prop("disabled", false);
-	$("#hiddenPatientIdSave").value="";
+	$("#hiddenPatientIdSave").value = "";
 	$("#firstName").val("");
-	 $("#lastName").val("");
-	 $("#age").val("");
-	 $("#gender").val("Choose..."); 
-	 $("#address").val(""); 
-	 $("#mobileNumber").val(""); 
-	 $("#email").val("");
+	$("#lastName").val("");
+	$("#age").val("");
+	$("#gender").val("Choose...");
+	$("#address").val("");
+	$("#mobileNumber").val("");
+	$("#email").val("");
 });
 
 function validateItemForm() {
@@ -177,6 +245,6 @@ function validateItemFormUpdate() {
 			return "Email is not valid";
 		}
 	}
-	
+
 	return true;
 }
