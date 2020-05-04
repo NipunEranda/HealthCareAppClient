@@ -46,7 +46,7 @@
 							class="nav-item nav-link disabled" tabindex="-1">Reports</a>
 					</div>
 					<div class="navbar-nav ml-auto">
-						<a href="login.jsp?logout=true" class="nav-item nav-link"
+						<a href="index.jsp?logout=true" class="nav-item nav-link"
 							name="logout" value="logout">Logout</a>
 					</div>
 				</div>
