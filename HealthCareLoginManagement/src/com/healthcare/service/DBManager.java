@@ -28,9 +28,7 @@ public class DBManager {
 			ps_verifyLogin.setString(2, password);
 
 			ResultSet rs_verifyLogin = ps_verifyLogin.executeQuery();
-			if (rs_verifyLogin != null) {
-				while (rs_verifyLogin.next()) {
-
+			if (rs_verifyLogin.first() != false) {
 					String emailColonPassword = "authKey" + email + ":" + password;
 					String authString = Base64.getEncoder().encodeToString(emailColonPassword.getBytes());
 
@@ -41,9 +39,8 @@ public class DBManager {
 					l.addProperty("status", "success");
 					l.addProperty("userId", object.get("userId").getAsString());
 					l.addProperty("authString", authString);
-				}
 			} else {
-				l.addProperty("status", "fail");
+				l.addProperty("status", "error");
 				l.addProperty("userId", 0);
 				l.addProperty("authString", "");
 			}
@@ -201,25 +198,67 @@ public class DBManager {
 		Connection con;
 		try {
 			con = DBConnection.connect();
-			String query = "SELECT * FROM user WHERE userId=" + userId;
+			String query = "SELECT u.loginId, u.firstName, u.lastName, u.age, u.gender, u.address, u.mobileNumber, l.Login_Email, l.Login_Email FROM user u, login l WHERE u.userId=" + userId + " AND u.loginId = l.Login_Id";
 			PreparedStatement ps_getDetails = con.prepareStatement(query);
 			
 			ResultSet rs_getDetails = ps_getDetails.executeQuery();
 			
 			while(rs_getDetails.next()) {
-				obj.addProperty("loginId", rs_getDetails.getInt(2));
-				obj.addProperty("firstName", rs_getDetails.getString(3));
-				obj.addProperty("lastName", rs_getDetails.getString(4));
-				obj.addProperty("age", rs_getDetails.getInt(5));
-				obj.addProperty("gender", rs_getDetails.getString(6));
-				obj.addProperty("address", rs_getDetails.getString(7));
-				obj.addProperty("mobileNumber", rs_getDetails.getString(8));
+				obj.addProperty("loginId", rs_getDetails.getInt(1));
+				obj.addProperty("firstName", rs_getDetails.getString(2));
+				obj.addProperty("lastName", rs_getDetails.getString(3));
+				obj.addProperty("age", rs_getDetails.getInt(4));
+				obj.addProperty("gender", rs_getDetails.getString(5));
+				obj.addProperty("address", rs_getDetails.getString(6));
+				obj.addProperty("mobileNumber", rs_getDetails.getString(7));
+				obj.addProperty("email", rs_getDetails.getString(8));
+				obj.addProperty("password", rs_getDetails.getString(9));
 			}
 			
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return obj;
+	}
+	
+	public static JsonObject updateUserDetails(String userId, String firstName, String lastName, String age, String gender, String address, String mobileNumber,  String email) {
+		JsonObject obj = new JsonObject();
+		Connection con;
+		
+		String updateUser = "update user set firstName=?, lastName=?, age=?, gender=?, address=?, mobileNumber=? WHERE userId=" + userId;
+		String updateLogin = "update login set Login_Email=? WHERE Login_Id=(SELECT loginId FROM user WHERE userId=?)";
+		
+		try {
+			con = DBConnection.connect();
+			
+			PreparedStatement ps_updateUser = con.prepareStatement(updateUser);
+			ps_updateUser.setString(1, firstName);
+			ps_updateUser.setString(2, lastName);
+			ps_updateUser.setInt(3, Integer.parseInt(age));
+			ps_updateUser.setString(4, gender);
+			ps_updateUser.setString(5, address);
+			ps_updateUser.setString(6, mobileNumber);
+			
+			PreparedStatement ps_updateLogin = con.prepareStatement(updateLogin);
+			ps_updateLogin.setString(1, email);
+			ps_updateLogin.setString(2, userId);
+			
+			if (ps_updateUser.executeUpdate() > 0) {
+
+				if (ps_updateLogin.executeUpdate() > 0) {
+					obj.addProperty("status", "success");
+				}else {
+					obj.addProperty("status", "fail");
+				}
+
+			}
+			
+			
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		

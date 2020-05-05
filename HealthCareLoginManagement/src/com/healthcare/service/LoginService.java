@@ -13,4 +13,5 @@ public interface LoginService {
 	public String verifyPassword(String User_Id, String currentPassword);
 	public JsonObject getAutization(String header);
 	public JsonObject getUserDetails(String userId);
+	public JsonObject updateUserDetails(String userId, String firstName, String lastName, String age, String gender, String address, String mobileNumber,  String email);
 }

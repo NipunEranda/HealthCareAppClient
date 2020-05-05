@@ -1,3 +1,4 @@
+<%@page import="org.json.JSONObject"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="com.healthcare.model.Login"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -26,7 +27,7 @@
 }
 </style>
 </head>
-<body background="images/background2.jpg">
+<body>
 	<div class="fadeInDown">
 		<div class="baseContainer">
 			<nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -40,14 +41,13 @@
 
 				<div class="collapse navbar-collapse" id="navbarCollapse">
 					<div class="navbar-nav">
-						<a href="#" class="nav-item nav-link active">Home</a> <a href="#"
-							class="nav-item nav-link">Profile</a> <a href="#"
-							class="nav-item nav-link">Messages</a> <a href="#"
-							class="nav-item nav-link disabled" tabindex="-1">Reports</a>
+						<a href="adminPanel.jsp" id="homeNav"
+							class="nav-item nav-link active">Home</a> <a
+							href="userProfile.jsp" id="profileNav" class="nav-item nav-link">Profile</a>
 					</div>
 					<div class="navbar-nav ml-auto">
-						<a href="index.jsp?logout=true" class="nav-item nav-link"
-							name="logout" value="logout">Logout</a>
+						<a href="index.jsp?logout=true" id="logoutNav"
+							class="nav-item nav-link">Logout</a>
 					</div>
 				</div>
 			</nav>
@@ -56,10 +56,10 @@
 				<h1 style="text-align: center;">
 					Welcome
 					<%
-					/*Login login = new Login();*/
-					/*HashMap<String, String> userDetails = login.getUserDetails((String) session.getAttribute("authString"),
+					Login login = new Login();
+					JSONObject userDetails = login.getUserDetails((String) session.getAttribute("authString"),
 							(String) session.getAttribute("userId"));
-					out.print(userDetails.get("firstName"));*/
+					out.print(userDetails.get("firstName"));
 				%>
 				</h1>
 				<br />

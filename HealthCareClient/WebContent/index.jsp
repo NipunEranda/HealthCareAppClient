@@ -16,6 +16,8 @@
 	src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script
 	src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="Components/login.js"></script>
+<script src="Components/main.js"></script>
 </head>
 <body background="images/background.jpg">
 
@@ -27,11 +29,13 @@
 					style="width: 200px; height: 200px;" />
 			</div>
 
-			<form action="LoginController" method="post">
-				<input type="email" id="login" class="fadeIn second" name="email"
+			<form id="formLogin">
+				<input type="email" class="fadeIn second" name="email" id="email"
 					placeholder="email"> <input type="password" id="password"
 					class="fadeIn third" name="password" placeholder="password">
-				<input type="submit" class="fadeIn fourth" value="Log In">
+				<input type="button" class="fadeIn fourth" id="loginBtn"
+					value="Log In">
+				<div id="alertError" class="alert alert-danger"></div>
 			</form>
 
 			<div id="formFooter">
@@ -40,13 +44,13 @@
 
 		</div>
 		<%
-		if (request.getParameter("logout") != null) {
-			if (request.getParameter("logout").equalsIgnoreCase("true")) {
-				session.invalidate();
-				response.sendRedirect("index.jsp");
+			if (request.getParameter("logout") != null) {
+				if (request.getParameter("logout").equalsIgnoreCase("true")) {
+					session.invalidate();
+					response.sendRedirect("index.jsp");
+				}
 			}
-		}
-	%>
+		%>
 	</div>
 </body>
 </html>

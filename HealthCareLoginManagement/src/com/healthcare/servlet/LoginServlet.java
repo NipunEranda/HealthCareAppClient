@@ -9,6 +9,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -80,5 +81,12 @@ public class LoginServlet {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getUserDetails(@PathParam("userId") String userId, @HeaderParam("authString") String authString) {
 		return Response.ok(loginServiceObj.getUserDetails(userId).toString()).build();
+	}
+	
+	@PUT
+	@Path("/updateUserDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateUserDetails(@FormParam("userId") String userId, @FormParam("firstName") String firstName, @FormParam("lastName") String lastName, @FormParam("age") String age, @FormParam("gender") String gender, @FormParam("address") String address, @FormParam("mobileNumber") String mobileNumber, @FormParam("email") String email) {
+		return Response.ok(loginServiceObj.updateUserDetails(userId, firstName, lastName, age, gender, address, mobileNumber, email).toString()).build();
 	}
 }

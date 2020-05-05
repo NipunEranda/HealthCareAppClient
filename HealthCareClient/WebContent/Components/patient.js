@@ -1,11 +1,3 @@
-$(document).ready(function() {
-	if ($("#alertSuccess").text().trim() == "") {
-		$("#alertSuccess").hide();
-	}
-	$("#alertError").hide();
-	$("#cancelBtn").hide();
-});
-
 $(document).on("click", ".btnUpdate", function(event) {
 	$("#cancelBtn").show();
 	$("#hiddenPatientIdSave").val(
@@ -25,14 +17,14 @@ $(document).on("click", "#saveBtn", function(event) {
 
 	var type = ($("#hiddenPatientIdSave").val() == "") ? "POST" : "PUT";
 	if (type == "POST") {
-		var status = validateItemForm();
+		var status = validateForm();
 		if (status != true) {
 			$("#alertError").text(status);
 			$("#alertError").show();
 			return;
 		}
 	} else {
-		var status = validateItemFormUpdate();
+		var status = validateUpdateForm();
 		if (status != true) {
 			$("#alertError").text(status);
 			$("#alertError").show();
@@ -71,7 +63,7 @@ function onItemSaveComplete(response, status) {
 			$("#alertSuccess").text("Successfully saved.");
 			$("#alertSuccess").show();
 			$("#cancelBtn").hide();
-			$("#divItemsGrid").html(resultSet.data);
+			$("#divPatientsGrid").html(resultSet.data);
 		} else if (resultSet.status.trim() == "error") {
 			$("#alertError").text(resultSet.data);
 			$("#alertError").show();
@@ -125,7 +117,7 @@ $(document).on("click", "#cancelBtn", function(event) {
 	$("#email").val("");
 });
 
-function validateItemForm() {
+function validateForm() {
 
 	if ($("#firstName").val().trim() == "") {
 		return "Insert your First Name.";
@@ -137,10 +129,6 @@ function validateItemForm() {
 
 	if ($("#age").val().trim() == "") {
 		return "Insert your age";
-	}
-
-	if (age < 1) {
-		return "Insert a valid age.";
 	}
 
 	if ($("#gender").val().trim() == "Choose...") {
@@ -192,7 +180,7 @@ function validateItemForm() {
 	return true;
 }
 
-function validateItemFormUpdate() {
+function validateUpdateForm() {
 
 	if ($("#firstName").val().trim() == "") {
 		return "Insert your First Name.";

@@ -17,6 +17,7 @@
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="Components/patient.js"></script>
+<script src="Components/main.js"></script>
 <link href="Views/patientManagement.css" rel="stylesheet">
 <style type="text/css">
 .baseContainer {
@@ -54,7 +55,6 @@
 
 	<%
 		Patient patient = new Patient();
-
 	%>
 
 	<div class="baseContainer">
@@ -71,13 +71,13 @@
 
 					<div class="collapse navbar-collapse" id="navbarCollapse">
 						<div class="navbar-nav">
-							<a href="adminPanel.jsp" class="nav-item nav-link active">Home</a>
-							<a href="#" class="nav-item nav-link">Profile</a> <a href="#"
-								class="nav-item nav-link">Messages</a> <a href="#"
-								class="nav-item nav-link disabled" tabindex="-1">Reports</a>
+							<a href="adminPanel.jsp" id="homeNav"
+								class="nav-item nav-link">Home</a> <a
+								href="userProfile.jsp" id="profileNav" class="nav-item nav-link">Profile</a>
 						</div>
 						<div class="navbar-nav ml-auto">
-							<a href="index.jsp?logout=true" class="nav-item nav-link">Logout</a>
+							<a href="index.jsp?logout=true" id="logoutNav"
+								class="nav-item nav-link">Logout</a>
 						</div>
 					</div>
 				</nav>
@@ -87,7 +87,7 @@
 				<div>
 					<h1>Manage Patient Details</h1>
 					<br />
-					<form id="formPatient" action="patientManagement.jsp" method="post">
+					<form id="formPatient">
 						<div class="form-group">
 							<div class="row">
 								<div class="col">
@@ -156,26 +156,20 @@
 							</div>
 						</div>
 
-						<div id="alertSuccess" class="alert alert-success">
-							<%
-								if (session.getAttribute("statusMsg") != null) {
-									out.print(session.getAttribute("statusMsg"));
-									session.setAttribute("statusMsg", null);
-								}
-							%>
-						</div>
+						<div id="alertSuccess" class="alert alert-success"></div>
 						<div id="alertError" class="alert alert-danger"></div>
 						<input type="button" class="btn btn-primary" id="saveBtn"
 							name="saveBtn" value="Save">&nbsp;<input type="button"
 							class="btn btn-danger" id="cancelBtn" name="cancelBtn"
 							value="Cancel"> <input type="hidden"
-							id="hiddenPatientIdSave" name="hiddenPatientIdSave" value="" /><input type="hidden"
-							id="authString" name="authString" value="<% out.print(session.getAttribute("authString")); %>"/>
+							id="hiddenPatientIdSave" name="hiddenPatientIdSave" value="" /><input
+							type="hidden" id="authString" name="authString"
+							value="<%out.print(session.getAttribute("authString"));%>" />
 
 					</form>
 				</div>
 				<br />
-				<div id="divItemsGrid">
+				<div id="divPatientsGrid">
 					<h1>Patients List</h1>
 					<br />
 					<%

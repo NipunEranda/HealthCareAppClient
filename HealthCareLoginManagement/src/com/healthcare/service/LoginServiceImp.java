@@ -47,4 +47,9 @@ public class LoginServiceImp implements LoginService {
 		return DBManager.getUserDetails(userId);
 	}
 
+	@Override
+	public JsonObject updateUserDetails(String userId, String firstName, String lastName, String age, String gender, String address, String mobileNumber,  String email) {
+		return DBManager.updateUserDetails(userId, firstName, lastName, age, gender, address, mobileNumber,  email);
+	}
+
 }
