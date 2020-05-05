@@ -28,7 +28,7 @@ public class Patient {
 				String inputLine;
 				StringBuffer response = new StringBuffer();
 
-				output = "<table border='1' style='width: 100%;text-align:center'><tr><th>FirstName</th><th>LastName</th><th>Age</th><th>Gender</th><th>Address</th><th>MobileNumber</th><th>Email</th><th>Update</th><th>Delete</th></tr>";
+				output = "<table class='table table-hover'><thead><tr><th>FirstName</th><th>LastName</th><th>Age</th><th>Gender</th><th>Address</th><th>MobileNumber</th><th>Email</th><th>Update</th><th>Delete</th></tr></thead><tbody>";
 
 				while ((inputLine = in.readLine()) != null) {
 					response.append(inputLine);
@@ -49,7 +49,7 @@ public class Patient {
 							+ "</td><td><input type='button' name='btnUpdate' value='Update' class='btnUpdate btn btn-secondary'></td><td><Input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' data-authString='"
 							+ authString + "' data-userId='" + jsonObject.getInt("userId") + "'></td></tr>";
 				}
-				output += "</table>";
+				output += "</tbody></table>";
 			} else {
 				System.out.println("GET request not worked");
 			}

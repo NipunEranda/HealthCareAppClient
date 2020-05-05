@@ -47,10 +47,11 @@ function onUserUpdateComplete(response, status) {
 		var resultSet = JSON.parse(response);
 		if (resultSet.status.trim() == "success") {
 			$("#alertSuccess").text("Successfully saved.");
-			alert("Login again to affect changes.");
-			document.location = "index.jsp";
 			$("#alertSuccess").show();
 			$("#cancelBtn").hide();
+			$("#updateBtn").val("Update");
+			alert("Login again to affect changes.");
+			document.location = "index.jsp";
 		} else if (resultSet.status.trim() == "error") {
 			$("#alertError").text(resultSet.data);
 			$("#alertError").show();

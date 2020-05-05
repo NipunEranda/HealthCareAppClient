@@ -158,21 +158,16 @@ public class Login {
 					response.append(inputLine1);
 				}
 				in1.close();
-				System.out.println(response.toString());
 				JSONObject jsonObject = new JSONObject(response.toString());
 				if (jsonObject.getString("status").equalsIgnoreCase("success")) {
-					// String newUserDetails = getUserDetails(authString, userId).toString();
 					resObj.put("status", "success");
-					// resObj.put("data", newUserDetails);
 				} else {
 					resObj.put("status", "error");
-					resObj.put("data", "Error while updating the item.");
 				}
 			}
 
 		} catch (Exception e) {
 			resObj.put("status", "error");
-			resObj.put("data", "Error while updating the item.");
 			System.err.println(e.getMessage());
 		}
 		return resObj;
