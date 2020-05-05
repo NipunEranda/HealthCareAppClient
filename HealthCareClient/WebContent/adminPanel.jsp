@@ -21,13 +21,14 @@
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <link href="Views/adminPanel.css" rel="stylesheet">
+<link href="Views/main.css" rel="stylesheet">
 <style type="text/css">
 .baseContainer {
 	margin: 20px;
 }
 </style>
 </head>
-<body>
+<body background="images/background.jpg">
 	<div class="fadeInDown">
 		<div class="baseContainer">
 			<nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -53,7 +54,8 @@
 			</nav>
 
 			<div>
-				<h1 style="text-align: center;">
+				<br />
+				<h1 style="text-align: center;color: white;">
 					Welcome
 					<%
 					Login login = new Login();
@@ -89,6 +91,28 @@
 								<div class="col c" style="padding: 25px;">
 									<div class="cc">
 										<label>User Management</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col">
+							<div class="row">
+								<div class="col c" style="padding: 25px;">
+									<div class="cc">
+										<label>Hospital Management</label>
+									</div>
+								</div>
+								<div class="col c" style="padding: 25px;">
+									<div class="cc">
+										<label>Appointment Management</label>
+									</div>
+								</div>
+								<div class="col c" style="padding: 25px;">
+									<div class="cc">
+										<label>Payment Management</label>
 									</div>
 								</div>
 							</div>

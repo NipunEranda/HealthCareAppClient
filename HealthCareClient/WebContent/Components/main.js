@@ -5,7 +5,3 @@ $(document).ready(function() {
 	$("#alertError").hide();
 	$("#cancelBtn").hide();
 });
-
-$(document).on("click", "#logoutNav", function(event) {
-	alert("LOL");
-});

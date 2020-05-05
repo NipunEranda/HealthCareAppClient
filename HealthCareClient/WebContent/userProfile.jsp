@@ -29,7 +29,7 @@
 }
 </style>
 </head>
-<body>
+<body background="images/background.jpg" style="background-size: cover;">
 	<%
 		Login login = new Login();
 		JSONObject userDetails = login.getUserDetails((String) session.getAttribute("authString"),
@@ -58,10 +58,10 @@
 					</div>
 				</div>
 			</nav>
-
+			<br />
 			<div>
-
-				<div class="container">
+				<div class="container"
+					style="background-color: rgba(255, 255, 255, 0.5); border-radius: 25px; padding: 50px;">
 					<div>
 						<form id="formUser">
 							<div class="form-group">
@@ -139,7 +139,8 @@
 								class='btnUpdate btn btn-danger'><input type="hidden"
 								id="authString" name="authString"
 								value="<%out.print(session.getAttribute("authString"));%>" /> <input
-								type="hidden" id="userId" name="userId" value="<% out.print(session.getAttribute("userId")); %>" />
+								type="hidden" id="userId" name="userId"
+								value="<%out.print(session.getAttribute("userId"));%>" />
 						</form>
 					</div>
 				</div>

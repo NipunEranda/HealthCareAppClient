@@ -51,7 +51,7 @@
 %>
 
 </head>
-<body>
+<body background="images/background.jpg" style="background-size: cover;">
 
 	<%
 		Patient patient = new Patient();
@@ -82,7 +82,8 @@
 			</nav>
 		</div>
 		<br />
-		<div class="container">
+		<div class="container"
+			style="background-color: rgba(255, 255, 255, 0.5); border-radius: 25px; padding: 50px;">
 			<div>
 				<h1>Manage Patient Details</h1>
 				<br />
@@ -168,6 +169,8 @@
 				</form>
 			</div>
 			<br />
+			<hr style="width: 100%; background-color: black;" />
+			<br />
 			<div id="divPatientsGrid">
 				<h1>Patients List</h1>
 				<br />
@@ -175,7 +178,10 @@
 					out.print(patient.readPatients(session.getAttribute("authString").toString()));
 				%>
 			</div>
+			<br />
 		</div>
 	</div>
+	<br />
+	<br />
 </body>
 </html>
