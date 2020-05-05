@@ -21,7 +21,7 @@ $(document).on("click", "#updateBtn", function(event) {
 			$("#alertError").show();
 			return;
 		}
-		alert('lol');
+
 		$.ajax({
 			url : "LoginController",
 			type : "PUT",
@@ -47,6 +47,8 @@ function onUserUpdateComplete(response, status) {
 		var resultSet = JSON.parse(response);
 		if (resultSet.status.trim() == "success") {
 			$("#alertSuccess").text("Successfully saved.");
+			alert("Login again to affect changes.");
+			document.location = "index.jsp";
 			$("#alertSuccess").show();
 			$("#cancelBtn").hide();
 		} else if (resultSet.status.trim() == "error") {
@@ -93,9 +95,9 @@ function validateForm() {
 		return "Insert your age";
 	}
 
-	/*if (age < 1) {
-		return "Insert a valid age.";
-	}*/
+	/*
+	 * if (age < 1) { return "Insert a valid age."; }
+	 */
 
 	if ($("#gender").val().trim() == "Choose...") {
 		return "Select your gender";

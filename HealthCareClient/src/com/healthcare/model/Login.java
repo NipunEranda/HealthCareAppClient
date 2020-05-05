@@ -130,18 +130,17 @@ public class Login {
 		return jsonObject;
 	}
 
-	/*public JSONObject updateUserDetails(String userId, String firstName, String lastName, String age, String gender,
+	public JSONObject updateUserDetails(String userId, String firstName, String lastName, String age, String gender,
 			String address, String mobileNumber, String email, String authString) {
-		System.out.println(authString);
 		JSONObject resObj = new JSONObject();
 
 		try {
 			String PUT_URL = "http://localhost:8080/HealthCareLoginManagement/webapi/login/updateUserDetails?";
-			String PUT_PARAMS = "userId=" + userId + "&firstName=" + firstName + "&lastName=" + lastName + "&age=" + 11
+			String PUT_PARAMS = "userId=" + userId + "&firstName=" + firstName + "&lastName=" + lastName + "&age=" + age
 					+ "&gender=" + gender + "&address=" + address + "&mobileNumber=" + mobileNumber + "&email=" + email;
 			URL obj = new URL(PUT_URL);
 			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-			con.setRequestMethod("PUT");
+			con.setRequestMethod("PUT");	
 			con.setRequestProperty("authString", authString);
 			con.setDoOutput(true);
 			OutputStream os = con.getOutputStream();
@@ -177,7 +176,7 @@ public class Login {
 			System.err.println(e.getMessage());
 		}
 		return resObj;
-	}*/
+	}
 	
 	public String getAuthString() {
 		return this.authString;

@@ -138,7 +138,8 @@
 								type='button' name='cancelBtn' id="cancelBtn" value='Cancel'
 								class='btnUpdate btn btn-danger'><input type="hidden"
 								id="authString" name="authString"
-								value="<%out.print(session.getAttribute("authString"));%>" />
+								value="<%out.print(session.getAttribute("authString"));%>" /> <input
+								type="hidden" id="userId" name="userId" value="<% out.print(session.getAttribute("userId")); %>" />
 						</form>
 					</div>
 				</div>

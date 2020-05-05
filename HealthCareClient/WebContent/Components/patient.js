@@ -37,7 +37,7 @@ $(document).on("click", "#saveBtn", function(event) {
 		data : $("#formPatient").serialize(),
 		dataType : "text",
 		complete : function(response, status) {
-			onItemSaveComplete(response.responseText, status);
+			onPatientDetailsSaveComplete(response.responseText, status);
 		}
 	});
 });
@@ -51,12 +51,12 @@ $(document).on("click", ".btnRemove", function(event) {
 		data : "userId=" + userId + "&authString=" + authString,
 		dataType : "text",
 		complete : function(response, status) {
-			onItemDeleteComplete(response.responseText, status);
+			onPatientDetailsDeleteComplete(response.responseText, status);
 		}
 	});
 });
 
-function onItemSaveComplete(response, status) {
+function onPatientDetailsSaveComplete(response, status) {
 	if (status == "success") {
 		var resultSet = JSON.parse(response);
 		if (resultSet.status.trim() == "success") {
@@ -81,7 +81,7 @@ function onItemSaveComplete(response, status) {
 	$('#alertError').fadeOut(3000);
 }
 
-function onItemDeleteComplete(response, status) {
+function onPatientDetailsDeleteComplete(response, status) {
 	if (status == "success") {
 		var resultSet = JSON.parse(response);
 		if (resultSet.status.trim() == "success") {
