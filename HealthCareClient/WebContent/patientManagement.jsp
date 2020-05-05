@@ -179,8 +179,7 @@
 					<h1>Patients List</h1>
 					<br />
 					<%
-						patient.authString = session.getAttribute("authString").toString();
-						out.print(patient.readPatients());
+						out.print(patient.readPatients(session.getAttribute("authString").toString()));
 					%>
 				</div>
 			</div>

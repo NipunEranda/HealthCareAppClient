@@ -11,9 +11,10 @@ import org.json.JSONObject;
 
 public class Patient {
 
-	public static String authString;
-	
-	public String readPatients() {
+	public String authString;
+
+	public String readPatients(String authString) {
+		this.authString = authString;
 		String output = null;
 		String GET_URL = "http://localhost:8080/HealthCarePatientManagement/webapi/patient/getAllUsers";
 		try {
@@ -38,13 +39,15 @@ public class Patient {
 				for (Object x : jsonArray) {
 					JSONObject jsonObject = new JSONObject(x.toString());
 					JSONObject login = jsonObject.getJSONObject("login");
-					output += "<tr><td><input type='hidden' id='hiddenPatientIdUpdate' name='hiddenPatientIdUpdate' value='"
+					output += "<tr><td><input type='hidden' id='authString' name='authString' value='" + authString
+							+ "'><input type='hidden' id='hiddenPatientIdUpdate' name='hiddenPatientIdUpdate' value='"
 							+ jsonObject.getInt("userId") + "'>" + jsonObject.getString("firstName") + "</td><td>"
 							+ jsonObject.getString("lastName") + "</td><td>" + jsonObject.getInt("age") + "</td><td>"
 							+ jsonObject.getString("gender") + "</td><td>" + jsonObject.getString("address")
 							+ "</td><td>" + jsonObject.getString("mobileNumber") + "</td><td>"
 							+ login.getString("email")
-							+ "</td><td><input type='button' name='btnUpdate' value='Update' class='btnUpdate btn btn-secondary'></td><td><Input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' data-userId='" + jsonObject.getInt("userId") + "'></td></tr>";
+							+ "</td><td><input type='button' name='btnUpdate' value='Update' class='btnUpdate btn btn-secondary'></td><td><Input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' data-authString='"
+							+ authString + "' data-userId='" + jsonObject.getInt("userId") + "'></td></tr>";
 				}
 				output += "</table>";
 			} else {
@@ -58,7 +61,7 @@ public class Patient {
 	}
 
 	public String insertPatient(String firstName, String lastName, String age, String gender, String address,
-			String mobileNumber, String email, String password) {
+			String mobileNumber, String email, String password, String authString) {
 		String output = null;
 		try {
 			String POST_URL = "http://localhost:8080/HealthCarePatientManagement/webapi/patient/registerUser?";
@@ -90,7 +93,7 @@ public class Patient {
 				 * JSONObject jsonObject = new JSONObject(response1.toString()); output =
 				 * jsonObject.get("status").toString();
 				 */
-				String newPatients = readPatients();
+				String newPatients = readPatients(authString);
 				output = "{\"status\":\"success\", \"data\":\"" + newPatients + "\"}";
 			}
 
@@ -103,7 +106,7 @@ public class Patient {
 	}
 
 	public String updatePatient(String userId, String firstName, String lastName, String age, String gender,
-			String address, String mobileNumber, String email) {
+			String address, String mobileNumber, String email, String authString) {
 		String output = null;
 		try {
 			String POST_URL = "http://localhost:8080/HealthCarePatientManagement/webapi/patient/updateUser?";
@@ -135,7 +138,7 @@ public class Patient {
 				 * JSONObject jsonObject = new JSONObject(response1.toString()); output =
 				 * jsonObject.getString("status").toString();
 				 */
-				String newPatients = readPatients();
+				String newPatients = readPatients(authString);
 				output = "{\"status\":\"success\", \"data\":\"" + newPatients + "\"}";
 			}
 
@@ -147,7 +150,7 @@ public class Patient {
 		return output;
 	}
 
-	public String deletePatient(String userId) {
+	public String deletePatient(String userId, String authString) {
 		String output = null;
 		try {
 			String POST_URL = "http://localhost:8080/HealthCarePatientManagement/webapi/patient/" + userId;
@@ -175,7 +178,7 @@ public class Patient {
 				 * JSONObject jsonObject = new JSONObject(response1.toString()); output =
 				 * jsonObject.getString("status").toString();
 				 */
-				String newPatients = readPatients();
+				String newPatients = readPatients(authString);
 				output = "{\"status\":\"success\", \"data\":\"" + newPatients + "\"}";
 			}
 

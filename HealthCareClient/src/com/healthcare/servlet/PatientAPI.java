@@ -6,6 +6,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.Session;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +45,7 @@ public class PatientAPI extends HttpServlet {
 
 		String output = patient.insertPatient(request.getParameter("firstName"), request.getParameter("lastName"),
 				request.getParameter("age"), request.getParameter("gender"), request.getParameter("address"),
-				request.getParameter("mobileNumber"), request.getParameter("email"), request.getParameter("password"));
+				request.getParameter("mobileNumber"), request.getParameter("email"), request.getParameter("password"), request.getParameter("authString"));
 		response.getWriter().write(output);
 	}
 
@@ -52,7 +54,7 @@ public class PatientAPI extends HttpServlet {
 			throws ServletException, IOException {
 
 		Map paras = getParasMap(request);
-		String output = patient.deletePatient(paras.get("userId").toString());
+		String output = patient.deletePatient(paras.get("userId").toString(), paras.get("authString").toString());
 		response.getWriter().write(output);
 	}
 
@@ -64,7 +66,7 @@ public class PatientAPI extends HttpServlet {
 		String output = patient.updatePatient(paras.get("hiddenPatientIdSave").toString(),
 				paras.get("firstName").toString(), paras.get("lastName").toString(), paras.get("age").toString(),
 				paras.get("gender").toString(), paras.get("address").toString(), paras.get("mobileNumber").toString(),
-				paras.get("email").toString());
+				paras.get("email").toString(), paras.get("authString").toString());
 		response.getWriter().write(output);
 	}
 

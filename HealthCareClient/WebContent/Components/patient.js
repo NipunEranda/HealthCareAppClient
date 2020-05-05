@@ -6,32 +6,20 @@ $(document).ready(function() {
 	$("#cancelBtn").hide();
 });
 
-$(document)
-		.on(
-				"click",
-				".btnUpdate",
-				function(event) {
-					$("#cancelBtn").show();
-					$("#hiddenPatientIdSave").val(
-							$(this).closest("tr")
-									.find('#hiddenPatientIdUpdate').val());
-					$("#firstName").val(
-							$(this).closest("tr").find('td:eq(0)').text());
-					$("#lastName").val(
-							$(this).closest("tr").find('td:eq(1)').text());
-					$("#age")
-							.val($(this).closest("tr").find('td:eq(2)').text());
-					$("#gender").val(
-							$(this).closest("tr").find('td:eq(3)').text());
-					$("#address").val(
-							$(this).closest("tr").find('td:eq(4)').text());
-					$("#mobileNumber").val(
-							$(this).closest("tr").find('td:eq(5)').text());
-					$("#email").val(
-							$(this).closest("tr").find('td:eq(6)').text());
-					$("#saveBtn").val("Update");
-					$("#password").prop("disabled", true);
-				});
+$(document).on("click", ".btnUpdate", function(event) {
+	$("#cancelBtn").show();
+	$("#hiddenPatientIdSave").val(
+	$(this).closest("tr").find('#hiddenPatientIdUpdate').val());
+	$("#firstName").val($(this).closest("tr").find('td:eq(0)').text());
+	$("#lastName").val($(this).closest("tr").find('td:eq(1)').text());
+	$("#age").val($(this).closest("tr").find('td:eq(2)').text());
+	$("#gender").val($(this).closest("tr").find('td:eq(3)').text());
+	$("#address").val($(this).closest("tr").find('td:eq(4)').text());
+	$("#mobileNumber").val($(this).closest("tr").find('td:eq(5)').text());
+	$("#email").val($(this).closest("tr").find('td:eq(6)').text());
+	$("#saveBtn").val("Update");
+	$("#password").prop("disabled", true);
+});
 
 $(document).on("click", "#saveBtn", function(event) {
 
@@ -64,10 +52,11 @@ $(document).on("click", "#saveBtn", function(event) {
 
 $(document).on("click", ".btnRemove", function(event) {
 	var userId = $(this).attr('data-userId');
+	var authString = $(this).attr('data-authString');
 	$.ajax({
 		url : "PatientAPI",
 		type : "DELETE",
-		data : "userId=" + userId,
+		data : "userId=" + userId + "&authString=" + authString,
 		dataType : "text",
 		complete : function(response, status) {
 			onItemDeleteComplete(response.responseText, status);
