@@ -21,6 +21,7 @@ $(document).on("click", "#saveBtn", function(event) {
 		if (status != true) {
 			$("#alertError").text(status);
 			$("#alertError").show();
+			$('#alertError').fadeOut(5000);
 			return;
 		}
 	} else {
@@ -28,6 +29,7 @@ $(document).on("click", "#saveBtn", function(event) {
 		if (status != true) {
 			$("#alertError").text(status);
 			$("#alertError").show();
+			$('#alertError').fadeOut(5000);
 			return;
 		}
 	}
@@ -130,6 +132,11 @@ function validateForm() {
 	if ($("#age").val().trim() == "") {
 		return "Insert your age";
 	}
+	
+	var age = parseInt($("#age").val().trim());
+	if (age < 1) {
+		return "Insert a valid age.";
+	}
 
 	if ($("#gender").val().trim() == "Choose...") {
 		return "Select your gender";
@@ -193,7 +200,8 @@ function validateUpdateForm() {
 	if ($("#age").val().trim() == "") {
 		return "Insert your age";
 	}
-
+	
+	var age = parseInt($("#age").val().trim());
 	if (age < 1) {
 		return "Insert a valid age.";
 	}

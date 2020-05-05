@@ -28,7 +28,7 @@
 }
 </style>
 </head>
-<body background="images/background.jpg">
+<body background="images/background.jpg" style="background-size: cover;">
 	<div class="fadeInDown">
 		<div class="baseContainer">
 			<nav class="navbar navbar-expand-md navbar-light bg-light">

@@ -19,7 +19,7 @@
 <script src="Components/login.js"></script>
 <script src="Components/main.js"></script>
 </head>
-<body background="images/background.jpg">
+<body background="images/background.jpg" style="background-size: cover;">
 
 	<div class="wrapper fadeInDown">
 		<div id="formContent">

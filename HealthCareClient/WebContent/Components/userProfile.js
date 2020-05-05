@@ -19,6 +19,7 @@ $(document).on("click", "#updateBtn", function(event) {
 		if (status != true) {
 			$("#alertError").text(status);
 			$("#alertError").show();
+			$('#alertError').fadeOut(5000);
 			return;
 		}
 
@@ -96,9 +97,10 @@ function validateForm() {
 		return "Insert your age";
 	}
 
-	/*
-	 * if (age < 1) { return "Insert a valid age."; }
-	 */
+	var age = parseInt($("#age").val().trim());
+	if (age < 1) {
+		return "Insert a valid age.";
+	}
 
 	if ($("#gender").val().trim() == "Choose...") {
 		return "Select your gender";
