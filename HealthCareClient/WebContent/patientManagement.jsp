@@ -6,55 +6,30 @@
 <head>
 <meta charset="UTF-8">
 <title>Patient Management</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="Components/popper.min.js"></script>
+<script src="Components/jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
 <script src="Components/patient.js"></script>
 <script src="Components/main.js"></script>
+
+<link href="Views/bootstrap.min.css" rel="stylesheet">
+<link href="Views/font-awesome.min.css" rel="stylesheet">
 <link href="Views/patientManagement.css" rel="stylesheet">
+<link href="Views/main.css" rel="stylesheet">
 <style type="text/css">
 .baseContainer {
 	margin: 20px;
 }
 </style>
-
-<%
-	if (session.getAttribute("statusMsg") != null) {
-%>
-<style>
-.alert .alert-success {
-	display: block;
-}
-</style>
-<%
-	} else {
-%>
-<style>
-.alert .alert-success {
-	display: none;
-}
-
-.alert .alert-danger {
-	display: none;
-}
-</style>
-
-<%
-	}
-%>
-
 </head>
 <body background="images/background.jpg" style="background-size: cover;">
 
 	<%
-		Patient patient = new Patient();
+		if (session.getAttribute("email") == null) {
+			response.sendRedirect("index.jsp");
+		} else {
+
+			Patient patient = new Patient();
 	%>
 
 	<div class="fadeInDown">
@@ -74,9 +49,8 @@
 						<a href="userProfile.jsp" id="profileNav"
 							class="nav-item nav-link">Profile</a>
 					</div>
-					<div class="navbar-nav ml-auto">
-						<a href="index.jsp?logout=true" id="logoutNav"
-							class="nav-item nav-link">Logout</a>
+					<div class="navbar-nav ml-auto" id="logoutNav">
+						<label class="nav-item nav-link logout">logout</label>
 					</div>
 				</div>
 			</nav>
@@ -183,5 +157,8 @@
 	</div>
 	<br />
 	<br />
+	<%
+		}
+	%>
 </body>
 </html>

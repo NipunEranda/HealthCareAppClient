@@ -10,17 +10,14 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Admin Panel</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<link href="Views/bootstrap.min.css" rel="stylesheet">
+<link href="Views/font-awesome.min.css" rel="stylesheet">
 <link href="Views/userProfile.css" rel="stylesheet">
+<link href="Views/main.css" rel="stylesheet">
+
+<script src="Components/popper.min.js"></script>
+<script src="Components/jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
 <script src="Components/userProfile.js"></script>
 <script src="Components/main.js"></script>
 <style type="text/css">
@@ -31,9 +28,13 @@
 </head>
 <body background="images/background.jpg" style="background-size: cover;">
 	<%
-		Login login = new Login();
-		JSONObject userDetails = login.getUserDetails((String) session.getAttribute("authString"),
-				(String) session.getAttribute("userId"));
+		if (session.getAttribute("email") == null) {
+			response.sendRedirect("index.jsp");
+		} else {
+
+			Login login = new Login();
+			JSONObject userDetails = login.getUserDetails((String) session.getAttribute("authString"),
+					(String) session.getAttribute("userId"));
 	%>
 	<div class="fadeInDown">
 		<div class="baseContainer">
@@ -52,9 +53,8 @@
 						<a href="userProfile.jsp" id="profileNav"
 							class="nav-item nav-link active">Profile</a>
 					</div>
-					<div class="navbar-nav ml-auto">
-						<a href="index.jsp?logout=true" id="logoutNav"
-							class="nav-item nav-link">Logout</a>
+					<div class="navbar-nav ml-auto" id="logoutNav">
+						<label class="nav-item nav-link logout">logout</label>
 					</div>
 				</div>
 			</nav>
@@ -148,5 +148,8 @@
 			</div>
 		</div>
 	</div>
+	<%
+		}
+	%>
 </body>
 </html>

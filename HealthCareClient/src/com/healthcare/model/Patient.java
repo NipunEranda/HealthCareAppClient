@@ -89,10 +89,6 @@ public class Patient {
 				}
 				in1.close();
 
-				/*
-				 * JSONObject jsonObject = new JSONObject(response1.toString()); output =
-				 * jsonObject.get("status").toString();
-				 */
 				String newPatients = readPatients(authString);
 				output = "{\"status\":\"success\", \"data\":\"" + newPatients + "\"}";
 			}
@@ -134,10 +130,6 @@ public class Patient {
 				}
 				in1.close();
 
-				/*
-				 * JSONObject jsonObject = new JSONObject(response1.toString()); output =
-				 * jsonObject.getString("status").toString();
-				 */
 				String newPatients = readPatients(authString);
 				output = "{\"status\":\"success\", \"data\":\"" + newPatients + "\"}";
 			}

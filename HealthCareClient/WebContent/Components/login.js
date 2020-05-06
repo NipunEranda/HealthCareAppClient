@@ -1,3 +1,4 @@
+//On Login Button Click
 $(document).on("click", "#loginBtn", function(event) {
 	$("#alertError").text("");
 	$("#alertError").hide();
@@ -20,6 +21,7 @@ $(document).on("click", "#loginBtn", function(event) {
 	});
 });
 
+//On Login complete
 function onLoginComplete(response, status) {
 	if (status == "success") {
 		var resultSet = JSON.parse(response);
@@ -38,6 +40,7 @@ function onLoginComplete(response, status) {
 	}
 }
 
+//Validate Login Form
 function validateLoginForm() {
 	if ($("#email").val().trim() == "") {
 		return "Insert Email";

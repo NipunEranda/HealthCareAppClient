@@ -6,12 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Login</title>
-<link
+<!-- <link
 	href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-	rel="stylesheet" id="bootstrap-css">
-
+	rel="stylesheet" id="bootstrap-css"> -->
+<link href="Views/bootstrap.min.css" rel="stylesheet">
 <link href="Views/login.css" rel="stylesheet">
-<link href="Views/main.css" rel="stylesheet">
 <script
 	src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <script
@@ -20,6 +19,13 @@
 <script src="Components/main.js"></script>
 </head>
 <body background="images/background.jpg" style="background-size: cover;">
+
+	<%
+		if (session.getAttribute("authString") != null
+				&& session.getAttribute("role").toString().equalsIgnoreCase("admin")) {
+			response.sendRedirect("adminPanel.jsp");
+		}
+	%>
 
 	<div class="wrapper fadeInDown">
 		<div id="formContent">

@@ -157,7 +157,6 @@ public class DBManager {
 				Connection con = DBConnection.connect();
 				byte[] decodedBytes = Base64.getDecoder().decode(header);
 				String decodedString = new String(decodedBytes);
-
 				if (decodedString.contains("authKey")) {
 
 					String value = decodedString.replace("authKey", "");

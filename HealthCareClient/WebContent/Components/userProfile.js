@@ -1,3 +1,4 @@
+//On Page Load
 $(document).ready(function() {
 	$("#firstName").prop("disabled", true);
 	$("#lastName").prop("disabled", true);
@@ -7,6 +8,8 @@ $(document).ready(function() {
 	$("#mobileNumber").prop("disabled", true);
 	$("#email").prop("disabled", true);
 });
+
+//On Update button click
 
 $(document).on("click", "#updateBtn", function(event) {
 	$("#cancelBtn").show();
@@ -43,6 +46,8 @@ $(document).on("click", "#updateBtn", function(event) {
 	$("#email").prop("disabled", false);
 });
 
+//On Update complete
+
 function onUserUpdateComplete(response, status) {
 	if (status == "success") {
 		var resultSet = JSON.parse(response);
@@ -70,6 +75,8 @@ function onUserUpdateComplete(response, status) {
 	$('#alertError').fadeOut(3000);
 }
 
+//On Cancel Button click
+
 $(document).on("click", "#cancelBtn", function(event) {
 	$("#cancelBtn").hide();
 	$("#updateBtn").val("Update");
@@ -82,6 +89,8 @@ $(document).on("click", "#cancelBtn", function(event) {
 	$("#mobileNumber").prop("disabled", true);
 	$("#email").prop("disabled", true);
 });
+
+//Form validation
 
 function validateForm() {
 

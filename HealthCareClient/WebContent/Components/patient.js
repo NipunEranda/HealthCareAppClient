@@ -1,3 +1,4 @@
+//On page load
 $(document).on("click", ".btnUpdate", function(event) {
 	$("#cancelBtn").show();
 	$("#hiddenPatientIdSave").val(
@@ -12,6 +13,8 @@ $(document).on("click", ".btnUpdate", function(event) {
 	$("#saveBtn").val("Update");
 	$("#password").prop("disabled", true);
 });
+
+//On Save Button Click
 
 $(document).on("click", "#saveBtn", function(event) {
 
@@ -44,6 +47,8 @@ $(document).on("click", "#saveBtn", function(event) {
 	});
 });
 
+//On Remove Button Click
+
 $(document).on("click", ".btnRemove", function(event) {
 	var userId = $(this).attr('data-userId');
 	var authString = $(this).attr('data-authString');
@@ -58,6 +63,8 @@ $(document).on("click", ".btnRemove", function(event) {
 	});
 });
 
+//On Save complete
+
 function onPatientDetailsSaveComplete(response, status) {
 	if (status == "success") {
 		var resultSet = JSON.parse(response);
@@ -65,6 +72,7 @@ function onPatientDetailsSaveComplete(response, status) {
 			$("#alertSuccess").text("Successfully saved.");
 			$("#alertSuccess").show();
 			$("#cancelBtn").hide();
+			$("#saveBtn").val("Save");
 			$("#divPatientsGrid").html(resultSet.data);
 		} else if (resultSet.status.trim() == "error") {
 			$("#alertError").text(resultSet.data);
@@ -77,11 +85,13 @@ function onPatientDetailsSaveComplete(response, status) {
 		$("#alertError").text("Unknown error while saving..");
 		$("#alertError").show();
 	}
-	$("#hidItemIDSave").val("");
+
 	$("#formPatient")[0].reset();
 	$('#alertSuccess').fadeOut(3000);
 	$('#alertError').fadeOut(3000);
 }
+
+//On Delete Complete
 
 function onPatientDetailsDeleteComplete(response, status) {
 	if (status == "success") {
@@ -89,7 +99,7 @@ function onPatientDetailsDeleteComplete(response, status) {
 		if (resultSet.status.trim() == "success") {
 			$("#alertSuccess").text("Successfully deleted.");
 			$("#alertSuccess").show();
-			$("#divItemsGrid").html(resultSet.data);
+			$("#divPatientsGrid").html(resultSet.data);
 		} else if (resultSet.status.trim() == "error") {
 			$("#alertError").text(resultSet.data);
 			$("#alertError").show();
@@ -105,6 +115,8 @@ function onPatientDetailsDeleteComplete(response, status) {
 	$('#alertError').fadeOut(3000);
 }
 
+//On Cancel Button Click
+
 $(document).on("click", "#cancelBtn", function(event) {
 	$("#cancelBtn").hide();
 	$("#saveBtn").val("Save");
@@ -118,6 +130,8 @@ $(document).on("click", "#cancelBtn", function(event) {
 	$("#mobileNumber").val("");
 	$("#email").val("");
 });
+
+//Form validation
 
 function validateForm() {
 
@@ -186,6 +200,8 @@ function validateForm() {
 
 	return true;
 }
+
+//Update Form validation
 
 function validateUpdateForm() {
 

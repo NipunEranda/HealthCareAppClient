@@ -10,16 +10,13 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Admin Panel</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="Components/popper.min.js"></script>
+<script src="Components/jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script src="Components/main.js"></script>
+
+<link href="Views/bootstrap.min.css" rel="stylesheet">
+<link href="Views/font-awesome.min.css" rel="stylesheet">
 <link href="Views/adminPanel.css" rel="stylesheet">
 <link href="Views/main.css" rel="stylesheet">
 <style type="text/css">
@@ -29,6 +26,11 @@
 </style>
 </head>
 <body background="images/background.jpg" style="background-size: cover;">
+	<%
+		if (session.getAttribute("email") == null) {
+			response.sendRedirect("index.jsp");
+		} else {
+	%>
 	<div class="fadeInDown">
 		<div class="baseContainer">
 			<nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -46,22 +48,21 @@
 							class="nav-item nav-link active">Home</a> <a
 							href="userProfile.jsp" id="profileNav" class="nav-item nav-link">Profile</a>
 					</div>
-					<div class="navbar-nav ml-auto">
-						<a href="index.jsp?logout=true" id="logoutNav"
-							class="nav-item nav-link">Logout</a>
+					<div class="navbar-nav ml-auto" id="logoutNav">
+						<label class="nav-item nav-link logout">logout</label>
 					</div>
 				</div>
 			</nav>
 
 			<div>
 				<br />
-				<h1 style="text-align: center;color: white;">
+				<h1>
 					Welcome
 					<%
 					Login login = new Login();
-					JSONObject userDetails = login.getUserDetails((String) session.getAttribute("authString"),
-							(String) session.getAttribute("userId"));
-					out.print(userDetails.get("firstName"));
+						JSONObject userDetails = login.getUserDetails((String) session.getAttribute("authString"),
+								(String) session.getAttribute("userId"));
+						out.print(userDetails.get("firstName"));
 				%>
 				</h1>
 				<br />
@@ -122,5 +123,8 @@
 			</div>
 		</div>
 	</div>
+	<%
+		}
+	%>
 </body>
 </html>
